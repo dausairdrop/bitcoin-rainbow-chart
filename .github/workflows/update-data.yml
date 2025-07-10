@@ -1,0 +1,40 @@
+name: Update Rainbow Chart
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Setiap hari pukul 00:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Fetch BTC price and update data.json
+      run: |
+        BTC_PRICE=$(curl -s https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd | jq '.bitcoin.usd')
+        echo "[
+  {
+    \"x\": \"$(date +%Y-%m-%d)\",
+    \"y\": $BTC_PRICE,
+    \"levels\": {
+      \"Buy!\": 18000,
+      \"Accumulate\": 23000,
+      \"Fair\": 34000,
+      \"FOMO\": 45000,
+      \"Bubble\": 60000,
+      \"Maximum Bubble Territory\": 80000
+    }
+  }
+]" > data.json
+
+    - name: Commit and push changes
+      run: |
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add data.json
+        git commit -m "Update BTC price" || echo "No changes to commit"
+        git push
