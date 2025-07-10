@@ -1,0 +1,14 @@
+[
+  {
+    "x": "2025-07-10",
+    "y": {"error":"Missing parameter vs_currencies"},
+    "levels": {
+      "Buy!": 18000,
+      "Accumulate": 23000,
+      "Fair": 34000,
+      "FOMO": 45000,
+      "Bubble": 60000,
+      "Maximum Bubble Territory": 80000
+    }
+  }
+]
